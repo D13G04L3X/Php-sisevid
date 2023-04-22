@@ -1,19 +1,19 @@
 <?php
 class ControlRepresentVisual_Indicador
 {
-    var $objRepresentVisual_Indicador;
-    function __construct($objRepresentVisual_Indicador)
+    var $objFuente_Indicador;
+    function __construct($objFuente_Indicador)
     {
-        $this->objRepresentVisual_Indicador = $objRepresentVisual_Indicador;
+        $this->objFuente_Indicador = $objFuente_Indicador;
     }
 
 |
     function guardar()
     {
+        $fkidfuente = this->objFuente_Indicador->getFkidFuente();
         $fkidindicador = this->objRepresentVisual_Indicador->getFkindicador();
-        $fkidrepresentacionvisual; = this->objRepresentVisual_Indicador->getFkidrepresentacionvisual();
 
-        $comandoSql = "INSERT INTO representvisual_indicador(fkidindicador,fkidrepresentacionvisual) VALUES ('$fkidindicador', '$fkidrepresentacionvisual')";
+        $comandoSql = "INSERT INTO fuente_indicador(fkidfuente,fkidindicador) VALUES ( '$fkidfuente','$fkidindicador')";
         $objControlConexion = new ControlConexion();
         $objControlConexion->abrirBd($GLOBALS['serv'], $GLOBALS['usua'], $GLOBALS['pass'], $GLOBALS['bdat'], $GLOBALS['port']);
         $objControlConexion->ejecutarComandoSql($comandoSql);
@@ -22,24 +22,24 @@ class ControlRepresentVisual_Indicador
 
     function consultar()
     {
-        $fkidindicador = $this->objfkidrepresentacionvisual->getfkidindicador();
-        $comandoSql = "SELECT * FROM representvisual_indicador WHERE fkidindicador = '$fkidindicador'";
+        $fkidfuente = $this->objFuente_Indicador->getFkidfuente();
+        $comandoSql = "SELECT * FROM fuente_indicador WHERE fkidfuente = '$fkidfuente'";
         $objControlConexion = new ControlConexion();
         $objControlConexion->abrirBd($GLOBALS['serv'], $GLOBALS['usua'], $GLOBALS['pass'], $GLOBALS['bdat'], $GLOBALS['port']);
         $recordSet = $objControlConexion->ejecutarSelect($comandoSql);
         if ($row = $recordSet->fetch_array(MYSQLI_BOTH)) {
-            $this->objRepresentVisual_Indicador->setfkidindicador($row['indicador']);
+            $this->objFuente_Indicador->setfkidfuente($row['fuente']);
         }
         $objControlConexion->cerrarBd();
-        return $this->objRepresentVisual_Indicador;
+        return $this->objFuente_Indicador;
     }
 
     function modificar()
     {
-        $fkidindicador = this->objRepresentVisual_Indicador->getFkindicador();
-        $fkidrepresentacionvisual; = this->objRepresentVisual_Indicador->getFkidrepresentacionvisual();
+        $fkidfuente = this->objFuente_Indicador->getFkidfuente();
+        $fkidindicador; = this->objFuente_Indicador->getFkidindicador();
 
-        $comandoSql = "UPDATE variable SET fkidindicador='$fkidindicador',fkidrepresentacionvisual='$fkidrepresentacionvisual' WHERE id = '$id'";
+        $comandoSql = "UPDATE variable SET fkidindicador='$fkidindicador',fkidfuente='$fkidfuente' WHERE id = '$id'";
         $objControlConexion = new ControlConexion();
         $objControlConexion->abrirBd($GLOBALS['serv'], $GLOBALS['usua'], $GLOBALS['pass'], $GLOBALS['bdat'], $GLOBALS['port']);
         $objControlConexion->ejecutarComandoSql($comandoSql);
@@ -48,8 +48,8 @@ class ControlRepresentVisual_Indicador
 
     function borrar()
     {
-        $fkidindicador = this->objRepresentVisual_Indicador->getFkindicador();
-        $comandoSql = "DELETE FROM representvisual_indicador WHERE id = '$id'";
+        $fkidfuente = this->objFuente_Indicador->getFkidfuente();
+        $comandoSql = "DELETE FROM fuente_indicador WHERE id = '$id'";
         $objControlConexion = new ControlConexion();
         $objControlConexion->abrirBd($GLOBALS['serv'], $GLOBALS['usua'], $GLOBALS['pass'], $GLOBALS['bdat'], $GLOBALS['port']);
         $objControlConexion->ejecutarComandoSql($comandoSql);
@@ -58,25 +58,25 @@ class ControlRepresentVisual_Indicador
 
     function listar()
     {
-        $comandoSql = "SELECT * FROM representvisual_indicador";
+        $comandoSql = "SELECT * FROM fuente_indicador";
         $objControlConexion = new ControlConexion();
         $objControlConexion->abrirBd($GLOBALS['serv'], $GLOBALS['usua'], $GLOBALS['pass'], $GLOBALS['bdat'], $GLOBALS['port']);
         $recordSet = $objControlConexion->ejecutarSelect($comandoSql);
         
-        $arregloRepresentVisual_Indicador = array();
+        $arregloFuente_Indicador = array();
         
         if (mysqli_num_rows($recordSet) > 0) {
             $i = 0;
             while ($row = $recordSet->fetch_array(MYSQLI_BOTH)) {
-                $objRepresentVisual_Indicador = new RepresentVisual_Indicador("", "");
-                $objRepresentVisual_Indicador->setFkidindicador($row['fkidindicador']);
-                $objRepresentVisual_Indicador->setFkidrepresentacionvisual($row['fkidrepresentacionvisual']);
-                $arregloRepresentVisual_Indicador[$i] = $objRepresentVisual_Indicador;
+                $objFuente_Indicador = new RepresentVisual_Indicador("", "");
+                $objFuente_Indicador->setFkidfuente($row['fkidfuente']);
+                $objFuente_Indicador->setFkidindicador($row['fkidindicador']);
+                $arregloFuente_Indicador[$i] = $objFuente_Indicador;
                 $i++;
             }
         }
         $objControlConexion->cerrarBd();
-        return $arregloRepresentVisual_Indicador;
+        return $arregloFuente_Indicador;
     }
 }
 ?>
